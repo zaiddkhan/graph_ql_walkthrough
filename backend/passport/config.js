@@ -34,9 +34,9 @@ export const configurePassport = async () => {
                 if(!valid){
                     throw new Error("invalid creds")
                 }
-                return 
+                return done(null,user)
             }catch(err){
-                console.log(err)
+                return done(err)
             }
         })
     )
