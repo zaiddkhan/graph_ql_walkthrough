@@ -12,7 +12,8 @@ import dotenv from 'dotenv';
 import { connectDb } from "./db/connectDb.js";
 import passport from "passport";
 import session from "express-session";
-import connectMongo, { MongoDBStore } from 'connect-mongodb-session'
+import connectMongo from 'connect-mongodb-session'
+
 import { configurePassport } from "./passport/config.js";
 
 import { buildContext } from "graphql-passport";
@@ -24,7 +25,7 @@ const app = express()
 const httpServer = http.createServer(app)
 
 
-const MongoDpStore = connectMongo(session);
+const MongoDBStore = connectMongo(session);
 
 const store = new MongoDBStore({
      url : process.env.MONGO_URL,
@@ -66,9 +67,9 @@ app.use(
         credentials : true
     }),
     express.json(),
-    expressMiddleware(server,{
-        context :  buildContext( { req,res })
-    }),
+    expressMiddleware(server, {
+		context: async ({ req, res }) => buildContext({ req, res }),
+	})
 );
 
 await new Promise((resolve) => httpServer.listen({

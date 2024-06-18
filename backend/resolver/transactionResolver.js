@@ -1,10 +1,10 @@
 import { Query } from "mongoose";
 import Transaction from '../models/transactionModel.js';
-import { transactions } from "../dummyData/data";
+
 
 const transactionResolver = {
     Query : {
-        transactions : async(_,_,context) => {
+        transactions : async(_,__,context) => {
             try{
                 if(!context.getUser())
                     throw new Error("User not found")
