@@ -14,11 +14,11 @@ const userTpyeDef = `#graphql
    }
 
    type Mutation {
-    signUp(input : SingUpInput!) : User
+    signUp(input : SignUpInput!) : User
     login(input : LoginInput!) : User
     logout : LogoutResponse
    }
-   input SingUpInput {
+   input SignUpInput {
      username : String!
      name : String!
     password : String!

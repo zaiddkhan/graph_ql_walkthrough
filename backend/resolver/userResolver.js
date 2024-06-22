@@ -21,14 +21,15 @@ const userResolver = {
                 const girlProfile = `https://avatar.iran.liara.run/public/girl?username=${username}`
 
                 const newUser = new User({
-                    username,
-                    name,
-                    hashedPass,
-                    gender,
+                    username : username,
+                    name : name,
+                    password : hashedPass,
+                    gender : gender,
                     profilePicture : gender == "male" ? boyProfile  : girlProfile
                 })
-                await newUser.await()
+                await newUser.save();
                 await context.login(newUser);
+                console.log(newUser)
                 return newUser
             }catch(err){
                 console.log(`erorooro ${err.message}`)
