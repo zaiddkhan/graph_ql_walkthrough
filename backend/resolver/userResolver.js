@@ -38,7 +38,13 @@ const userResolver = {
         },
         login : async(_,{input},context    ) => {
             try{
-                const {username,password} = input
+                const {username,password} = input;
+                console.log(username)
+                if(username == ''){
+                    throw new Error("Emptyyy")
+                    return
+                }
+                if(username == '' || password == '')  throw new Error("All fields are required");
                 const {user} = await context.authenticate("graphql-local",{username,password})
                 await context.login(user);
                 return user
@@ -50,10 +56,10 @@ const userResolver = {
         logout : async(_,__,context ) => {
             try{
                 await context.logout();
-                req.session.destroy((err) => {
+                context.req.session.destroy((err) => {
                     if(err) throw err
                 })
-                res.clearCookie("connect.sid");
+                context.res.clearCookie("connect.sid");
                 return { 
                     "message" : "logged out"
                 }
@@ -66,22 +72,22 @@ const userResolver = {
      },
     Query : {
         authUser : async(_,__,context) => {
-            try{
-                const user = await context.getUser();
-                return user
-
-            }catch(err){
-
-            }
+            try {
+				const user = await context.getUser();
+				return user;
+			} catch (err) {
+				console.error("Error in authUser: ", err);
+				throw new Error("Internal server error");
+			}
         },
         user :async ( _, userId) => {
-            try{
-                const user = await User.find((user) => user._id === userId)
-            
-                return user
-            }catch(err){
-
-            }
+            try {
+				const user = await User.findById(userId);
+				return user;
+			} catch (err) {
+				console.error("Error in user query:", err);
+				throw new Error(err.message || "Error getting user");
+			}
         }
        
         

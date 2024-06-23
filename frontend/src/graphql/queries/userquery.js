@@ -1,11 +1,10 @@
 import { gql } from '@apollo/client';
 
 export const GET_AUTHENTICATED_USERS = gql`
-  query GetDogs {
+  query GetAuthenticatedUser {
     authUser {
       _id
-      username
-      name 
+      username 
       profilePicture
     }
   }
